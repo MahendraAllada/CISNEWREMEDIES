@@ -1,0 +1,7 @@
+#!/bin/sh
+echo "Updating PasswordPolicy"
+if [ "$( aws iam update-account-password-policy --require-lowercase-characters )" ];then 
+    echo "FAILED"
+else
+    echo "1.6nr PASSED"
+fi

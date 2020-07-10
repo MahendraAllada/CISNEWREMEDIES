@@ -1,0 +1,24 @@
+#!/bin/sh
+# ** AUTO GENERATED **
+
+for TrailName in `aws cloudtrail describe-trails | jq '.trailList[].Name' | sed 's/"//g'`;
+do
+for CloudtrailkmsKey in `aws cloudtrail describe-trails | jq '.trailList[].KmsKeyId' | sed 's/"//g'`;
+do
+if [ "$( aws cloudtrail update-trail --name $TrailName --kms-key-id $CloudtrailkmsKey  )" ]; then
+if [ "$( aws kms put-key-policy --key-id $CloudtrailkmsKey --policy-name default --policy file://encrypt2.json )" ]; then
+      echo "PASSED"
+fi
+fi
+done
+done
+
+A=$(aws cloudtrail describe-trails | grep ' "KmsKeyId"' | wc -l)
+B=$(aws cloudtrail describe-trails | grep '"Name"' | wc -l)
+if [ "$A" == "$B"  ];then
+   echo "PASSED"
+
+else
+    echo "FAILED"
+fi
+

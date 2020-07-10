@@ -1,0 +1,10 @@
+{
+  "Type" : "AWS::EC2::FlowLog",
+  "Properties" : {      
+      "LogDestinationType" : s3,
+      "ResourceId" : vpc-0b6153bcb718398e1,
+      "ResourceType" : VPC,
+      "TrafficType" : ALL
+    }
+}
+

@@ -1,0 +1,9 @@
+#!/bin/sh
+echo “Enter the TopicName”
+read TopicName
+echo "Creating SNS-Topic"
+if [ "$(aws sns create-topic --name $TopicName )" ]; then
+       echo "PASSED"
+        else
+       echo "FAILED"
+    fi

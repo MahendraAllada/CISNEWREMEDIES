@@ -1,0 +1,22 @@
+#!/bin/sh
+source /root/newremedies/variables.sh
+for UserName in `aws iam list-users | jq '.Users[].UserName' | sed 's/"//g'`;
+do
+for PolicyArn in `aws iam list-attached-user-policies --user-name $UserName | jq '.AttachedPolicies[].PolicyArn | sed 's/"//g'`;
+do
+for PolicyNames in `aws iam list-user-policies --user-name $UserName | jq '.PolicyNames[]'`;
+do
+if [ "$(aws iam create-group --group-name $mahi@)" ]; then
+   if [ "$(aws iam add-user-to-group --user-name $UserName --group-name mahi@)" ]; then
+       if [ "$(aws iam detach-user-policy --user-name $UserName --policy-arn $PolicyArn)" ]; then
+               if [ "$(aws iam delete-user-policy --user-name $UserName --policy-name $PolicyNames)" ]; then
+                   echo "PASSED"
+else
+    echo "FAILED"
+fi
+fi
+fi
+fi
+done
+done
+done

@@ -1,0 +1,13 @@
+#!/bin/sh
+for GroupName in `aws ec2 describe-security-groups | jq '.SecurityGroups[].GroupName' | grep default | sed 's/"//g'`;
+do
+if [ "$(aws ec2 revoke-security-group-ingress --group-name $GroupName  --protocol all --cidr 0.0.0.0/0 )" ]; then
+#   if [ "$(aws ec2 revoke-security-group-egress --group-id sg-61059d4f --protocol all --cidr 0.0.0.0/0 )" ]; then
+#       if [ "$(aws ec2 revoke-security-group-egress --group-id sg-03d3adf32d179bb44 --protocol all --cidr 0.0.0.0/0 )" ]; then  
+       echo "PASSED"
+ else
+     echo "FAILED"
+fi
+#  fi
+#    fi
+done

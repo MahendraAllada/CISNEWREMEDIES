@@ -1,0 +1,15 @@
+#!/bin/bash
+for ResourceId in `aws ec2 describe-vpcs | jq '.Vpcs[].CidrBlock' | sed 's/"//g'`;
+do
+for DeliverLogPermission in `aws iam list-roles | jq '.Roles[].Arn' | sed 's/"//g'`;
+do
+for LogDestination in `aws logs describe-log-groups | jq '.logGroups[].logGroupName' | sed 's/"//g'`;
+do
+  if [ "$(aws ec2 create-flow-logs --resource-type VPC --resource-ids '[$ResourceId]' --traffic-type REJECT --log-destination-type cloud-watch-logs --log-destination '$LogDestination' --log-format '${version} ${account-id} ${interface-id} ${srcaddr} ${dstaddr} ${srcport} ${dstport} ${protocol} ${packets} ${bytes} ${start} ${end} ${action} ${log-status}' --deliver-logs-permission-arn $DeliverLogPermission )" ]; then
+  echo "PASSED"
+ else
+     echo "FAILED"
+  fi
+done
+done
+done

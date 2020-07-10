@@ -1,0 +1,12 @@
+#!/bin/sh
+#echo “CloudTname”
+#read CloudTname
+source /root/newremedies/variables.sh
+echo "Updating CT"
+CloudWatchLogsLogGroupArn=$(aws cloudtrail describe-trails | jq '.trailList[].CloudWatchLogsLogGroupArn' | gawk -F' ' {'print $1'} | sed 's/"//g' | sed 's/,//g')
+CloudWatchLogsRoleArn=$(aws cloudtrail describe-trails | jq '.trailList[].CloudWatchLogsRoleArn' | gawk -F' ' {'print $1'} | sed 's/"//g' | sed 's/,//g')
+if [ "$( aws cloudtrail update-trail --name $CloudTname --cloudwatch-logs-log-group-arn $CloudWatchLogsLogGroupArn --cloudwatch-logs-role-arn $CloudWatchLogsRoleArn )" ]; then
+       echo "PASSED"
+        else
+       echo "FAILED"
+    fi

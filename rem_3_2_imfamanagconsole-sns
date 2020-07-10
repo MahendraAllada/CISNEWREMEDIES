@@ -1,0 +1,10 @@
+#!/bin/sh
+#echo “Enter the TopicName”
+#read TopicName
+source /root/newremedies/variables.sh
+echo "Creating SNS-Topic"
+if [ "$(aws sns create-topic --name $TopicName )" ]; then
+       echo "PASSED"
+        else
+       echo "FAILED"
+    fi

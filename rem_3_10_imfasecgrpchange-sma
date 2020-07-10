@@ -1,0 +1,23 @@
+#!/bin/sh
+#echo “Enter the LogGroupName”
+#read LogGroupName
+#echo “Enter the FilterName”
+#read FilterName
+#echo “Enter the MetricName”
+#read MetricName
+#echo “Enter the MetricNamespace”
+#read MetricNamespace
+#echo “Enter the AlarmName”
+#read AlarmName
+source /root/newremedies/variables.sh
+echo "Creating Alarm and Metric"
+TopicArn=$(aws sns list-topics | grep TopicArn | gawk -F' ' {'print $2'} | sed 's/"//g' | sed 's/,//g')
+if [ "$( aws logs put-metric-filter --log-group-name $LogGroupName --filter-name $FilterName10 --metric-transformations metricName=$MetricName11,metricNamespace=$MetricNamespace12,metricValue=1 --filter-pattern '{($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.eventName = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup) }')" ];then
+     echo "Metric Created"
+fi  
+echo "Creating Alarm"
+ if [ "$(aws cloudwatch put-metric-alarm --alarm-name $AlarmName10 --metric-name $MetricName10 --statistic Sum --period 300 --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold --evaluation-periods 1 --namespace $MetricNamespace10 --alarm-actions $TopicArn )" ];then
+       echo "FAILED"
+        else
+       echo "3.1 PASSED"
+    fi

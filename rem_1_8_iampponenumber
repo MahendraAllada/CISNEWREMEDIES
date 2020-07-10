@@ -1,0 +1,7 @@
+#!/bin/sh
+echo "Updating PasswordPolicy"
+if [ "$( aws iam update-account-password-policy --require-numbers )" ];then 
+    echo "FAILED"
+else
+    echo "1.8nr PASSED"
+fi

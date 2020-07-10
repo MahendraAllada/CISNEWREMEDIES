@@ -1,0 +1,13 @@
+#!/bin/sh
+#echo “CloudTname”
+#read CloudTname
+source /root/newremedies/variables.sh
+echo "Creating CT"
+BucketName=$(aws s3api list-buckets | jq '.Buckets[].Name' | gawk -F' ' {'print $1'} | sed 's/"//g' | sed 's/,//g') 
+if [ "$(aws cloudtrail create-trail --name $CloudTname --s3-bucket-name $BucketName --is-multi-region-trail )" ]; then
+   if [ "$(aws cloudtrail start-logging --name $CloudTname )" ]; then
+       echo "PASSED"
+        else
+       echo "FAILED"
+    fi
+fi

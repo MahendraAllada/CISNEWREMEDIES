@@ -1,0 +1,7 @@
+#!/bin/sh
+echo "creating Key" 
+if [ "$( aws iam update-access-key  )" ]; then
+       echo "PASSED"
+        else
+       echo "FAILED"
+    fi

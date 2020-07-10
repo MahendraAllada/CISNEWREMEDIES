@@ -1,0 +1,9 @@
+#!/bin/sh
+for GroupName in `aws ec2 describe-security-groups | jq '.SecurityGroups[].GroupName' | sed 's/"//g'`;
+do
+if [ "$(aws ec2 revoke-security-group-ingress --group-name $GroupName --protocol tcp --port 3389 --cidr 0.0.0.0/0)" ]; then
+echo "PASSED"
+ else
+     echo "FAILED"
+  fi
+  done

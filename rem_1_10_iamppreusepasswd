@@ -1,0 +1,7 @@
+#!/bin/sh
+echo "Updating PasswordPolicy"
+if [ "$( aws iam update-account-password-policy --password-reuse-prevention 24 )" ];then 
+    echo "FAILED"
+else
+    echo "1.10nr PASSED"
+fi

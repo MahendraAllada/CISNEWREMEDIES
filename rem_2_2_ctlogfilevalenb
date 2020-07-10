@@ -1,0 +1,10 @@
+#!/bin/sh
+#echo “CloudTname”
+#read CloudTname
+echo "Updating trail"
+source /root/newremedies/variables.sh
+if [ "$(aws cloudtrail update-trail --name $CloudTname --enable-log-file-validation )" ]; then
+       echo "PASSED"
+        else
+       echo "FAILED"
+    fi

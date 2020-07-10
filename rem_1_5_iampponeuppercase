@@ -1,0 +1,8 @@
+#!/bin/sh
+echo "Updating PasswordPolicy"
+if [ "$( aws iam update-account-password-policy --require-uppercase-characters )" ];then 
+    echo "FAILED"
+else
+    echo "3.1 PASSED"
+fi
+

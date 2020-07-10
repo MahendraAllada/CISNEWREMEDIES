@@ -1,0 +1,15 @@
+{
+  "LoggingEnabled": {
+    "TargetBucket": "harsha3",
+    "TargetPrefix": "MyBucketLogs/",
+    "TargetGrants": [
+      {
+        "Grantee": {
+          "Type": "AmazonCustomerByEmail",
+          "EmailAddress": "mahi32353@gmail.com"
+        },
+        "Permission": "FULL_CONTROL"
+      }
+    ]
+  }
+}

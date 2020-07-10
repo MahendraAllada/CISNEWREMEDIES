@@ -1,0 +1,14 @@
+#!/bin/sh
+# ** AUTO GENERATED **
+aws iam generate-credential-report
+for UserName in ` aws iam get-credential-report --query 'Content' --output text | base64 -d | cut -d, -f1,16 | grep "N/A" | sed 's/[N/A]//g' | sed 's/,//g'`;
+do
+for AccessKeyId in `aws iam list-access-keys --user-name $UserName | jq '.AccessKeyMetadata[].AccessKeyId' | sed 's/"//g'`;
+do 
+if [ "$( aws iam delete-access-key --access-key-id $AccessKeyId --user-name $UserName)" ]; then
+   echo "PASSED"
+else
+   echo "Failed"
+fi
+done
+done

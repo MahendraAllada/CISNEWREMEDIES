@@ -1,0 +1,10 @@
+#!/bin/sh
+for BucketName in `aws s3api list-buckets | jq '.Buckets[].Name' | sed 's/"//g'`;
+do
+if [ "$(aws s3api put-bucket-logging --bucket $BucketName --bucket-logging-status  ]; then
+echo "2.6  PASSED"
+else
+ echo "FAILED"
+fi
+done
+
